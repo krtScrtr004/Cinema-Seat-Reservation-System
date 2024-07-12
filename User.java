@@ -1,9 +1,16 @@
+// import java.util.Objects;
 import java.util.Scanner;
 
 public class User extends UserDB {
     private String name;
     private String email;
     private String password;
+
+    public User(final String NAME, final String EMAIL, final String PASSWORD) {
+        this.name = NAME;
+        this.email = EMAIL;
+        this.password = PASSWORD;
+    }
 
     public static final String inputName() {
         String name = null;
@@ -80,4 +87,28 @@ public class User extends UserDB {
     public final String getPassword() {
         return this.password;
     }
+
+    @Override
+    public final String toString() {
+        return "Name = '" + name + '\'' +
+                ", Email = '" + email + '\'' +
+                ", Password = '" + password + '\'';
+    }
+
+    // @Override
+    // public final boolean equals(Object o) {
+    //     if (this == o) 
+    //         return true;
+
+    //     if (o == null || getClass() != o.getClass()) 
+    //         return false;
+
+    //     User user = (User) o;
+    //     return Objects.equals(email, user.email);
+    // }
+
+    // @Override
+    // public final int hashCode() {
+    //     return Objects.hash(name, email);
+    // }
 }

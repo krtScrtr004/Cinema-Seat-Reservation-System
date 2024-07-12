@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserDB {
@@ -66,5 +67,10 @@ public class UserDB {
         }
 
         return userDb.get(EMAIL);
+    }
+
+    public static final void displayAllUsers() {
+        for (Map.Entry<String, User> entry : userDb.entrySet()) 
+            System.out.println(entry);
     }
 }

@@ -1,17 +1,26 @@
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.Scanner;
 
-public class Reservation {
+public class Reservation extends ReservationDB {
+    private String customerName;
     private Integer seatNumber;
     private LocalTime startTime;
     private LocalTime endTime;
 
     public Reservation() {
-        seatNumber = null;
-        startTime = null;
-        endTime = null;
+        this.seatNumber = null;
+        this.startTime = null;
+        this.endTime = null;
+    }
+
+    public Reservation(final String CUSTOMER_NAME, final Integer SEAT_NUMBER, final String START_TIME, final String END_TIME) {
+        this.customerName = CUSTOMER_NAME;
+        this.seatNumber = SEAT_NUMBER;
+        this.startTime = parseToTime(START_TIME);
+        this.endTime = parseToTime(END_TIME);
     }
 
     private static final LocalTime parseToTime(final String TIME_STR) {
@@ -57,7 +66,9 @@ public class Reservation {
         return endTime;
     }
 
-    // TODO: Unique time identifier methods
+    public final void setCustomerName(final String CUSTOMER_NAME) {
+        this.customerName = CUSTOMER_NAME;
+    }
 
     public final void setSeatNumber(final Integer SEAT_NUMBER) {
         this.seatNumber = SEAT_NUMBER;
@@ -71,15 +82,42 @@ public class Reservation {
         this.endTime = END_TIME;
     }
 
-    public final Integer getSeatNumber() {
-        return this.seatNumber;
+    // public final Integer getSeatNumber() {
+    //     return this.seatNumber;
+    // }
+
+    // public final LocalTime getStartTime() {
+    //     return this.startTime;
+    // }
+
+    // public final LocalTime getEndTime() {
+    //     return this.endTime;
+    // }
+
+    @Override 
+    public final String toString() {
+        return "Name = '" + this.customerName + 
+                "', Seat Number = " + this.seatNumber + 
+                "', StartTime = " + this.startTime +
+                ", EndTime = " + this.endTime;
     }
 
-    public final LocalTime getStartTime() {
-        return this.startTime;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) 
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Reservation reservation = (Reservation) o;
+        return Objects.equals(seatNumber, reservation.seatNumber) && 
+               Objects.equals(startTime, reservation.startTime) && 
+               Objects.equals(endTime, reservation.endTime);
     }
 
-    public final LocalTime getEndTime() {
-        return this.endTime;
+    @Override
+    public int hashCode() {
+        return Objects.hash(seatNumber, startTime, endTime);
     }
 }

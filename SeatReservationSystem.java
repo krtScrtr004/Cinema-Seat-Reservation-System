@@ -1,6 +1,9 @@
-import java.util.Scanner;
+// import java.util.Scanner;
 
 public class SeatReservationSystem {
+    private static UserDB userDB = new UserDB();
+    private static ReservationDB reservationDB = new ReservationDB();
+
     static private class Seats {
         private static Integer[][] seats = new Integer[5][10];
 
@@ -84,5 +87,14 @@ public class SeatReservationSystem {
     }
 
     public static void main(String[] args) {
+        Reservation reservation = new Reservation("Narcos", 12, "12:00", "13:00"); 
+        Reservation reservation1 = new Reservation("Perwisyo", 22, "13:00", "14:00"); 
+
+        ReservationDB.addReservation(reservation);
+        ReservationDB.addReservation(reservation1);
+        ReservationDB.displayAllReservations();
+
+        ReservationDB.deleteReservation(reservation1);
+        ReservationDB.displayAllReservations();
     }
 }
