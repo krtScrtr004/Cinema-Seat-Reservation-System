@@ -1,10 +1,15 @@
-// import java.util.Objects;
-import java.util.Scanner;
+import java.util.Objects;
 
 public class User extends UserDB {
     private String name;
     private String email;
     private String password;
+
+    public User() {
+        this.name = null;
+        this.email = null;
+        this.password = null;
+    }
 
     public User(final String NAME, final String EMAIL, final String PASSWORD) {
         this.name = NAME;
@@ -13,67 +18,58 @@ public class User extends UserDB {
     }
 
     public static final String inputName() {
-        String name = null;
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("Enter your name: (LN, FN, MI.)");
-            name = sc.nextLine();
-        }
-        return name;
+        System.out.print("Enter your name: (LN, FN, MI.)");
+        return InputReader.readString();
     }
 
     public static final String inputEmail() {
-        String email = null;
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("Enter your email: ");
-            email = sc.nextLine();
-        }
-        return email;
+        System.out.print("Enter your email: ");
+        return InputReader.readString();
     }
 
     public static final String inputPassword() {
-        String password = null;
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("Enter your password: ");
-            password = sc.nextLine();
-        }
-        return password;
+        System.out.print("Enter your password: ");
+        return InputReader.readString();
     }
 
-    public final void setName(final String NAME) {
+    public final Boolean setName(final String NAME) {
         if (NAME.length() < 5 || NAME.length() > 100) {
             System.out.println("Entered name length must be between 5 and 100!");
-            return;
+            return false;
         }
 
         this.name = NAME;
+        return true;
     }
 
-    public final void setEmail(final String EMAIL) {
+    public final Boolean setEmail(final String EMAIL) {
         if (EMAIL.length() < 5 || EMAIL.length() > 50) {
             System.out.println("Entered email length must be between 5 and 50!");
-            return;
+            return false;
         }
 
         if (!EMAIL.contains("@")) {
             System.out.println("Incorrect email address!");
-            return;
+            return false;
         }
 
-        if (userDb.containsKey(EMAIL)) {
+        if (findUser(EMAIL) != null) {
             System.out.println("Email address already exists!");
-            return;
+            return false;
         }
 
         this.email = EMAIL;
+        return true;
     }
 
-    public final void setPassword(final String PASSWORD) {
+    public final Boolean setPassword(final String PASSWORD) {
         if (PASSWORD.length() < 5 || PASSWORD.length() > 50) {
             System.out.println("Entered password length must be between 5 and 50!");
-            return;
+            return false;
         }
 
         this.password = PASSWORD;
+        return true;
     }
 
     public final String getName() {
@@ -95,20 +91,20 @@ public class User extends UserDB {
                 ", Password = '" + password + '\'';
     }
 
-    // @Override
-    // public final boolean equals(Object o) {
-    //     if (this == o) 
-    //         return true;
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) 
+            return true;
 
-    //     if (o == null || getClass() != o.getClass()) 
-    //         return false;
+        if (o == null || getClass() != o.getClass()) 
+            return false;
 
-    //     User user = (User) o;
-    //     return Objects.equals(email, user.email);
-    // }
+        User user = (User) o;
+        return Objects.equals(email, user.email);
+    }
 
-    // @Override
-    // public final int hashCode() {
-    //     return Objects.hash(name, email);
-    // }
+    @Override
+    public final int hashCode() {
+        return Objects.hash(email);
+    }
 }

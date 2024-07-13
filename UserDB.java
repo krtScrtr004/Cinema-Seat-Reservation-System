@@ -61,12 +61,7 @@ public class UserDB {
     }
 
     public static final User findUser(final String EMAIL) {
-        if (!userDb.containsKey(EMAIL)) {
-            System.out.println("User not found!");
-            return null;
-        }
-
-        return userDb.get(EMAIL);
+        return (userDb.containsKey(EMAIL) ? userDb.get(EMAIL) : null);
     }
 
     public static final void displayAllUsers() {

@@ -1,5 +1,4 @@
 import java.util.HashSet;
-import java.util.Scanner;
 
 public class ReservationDB {
     private static HashSet<Reservation> reservationDb = new HashSet<>();
