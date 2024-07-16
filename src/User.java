@@ -76,7 +76,7 @@ public class User extends UserDb {
     }
 
     public final Boolean setReservation(final Reservation RESERVATION) {
-        if (ReservationDb.findReservation(reservation.getSchedule(), RESERVATION) == null) {
+        if ((reservation != null) && (ReservationDb.findReservation(reservation.getSchedule(), RESERVATION) == null)) {
             System.out.println("Reservation already exists!");
             return false;
         }

@@ -4,13 +4,13 @@ public class Main {
     private static final UserDb userDB = new UserDb();
     private static final ReservationDb reservationDB = new ReservationDb();
 
-    private static class Seats {
-        public static final Integer[][] seats = new Integer[5][10];
-
-        public static void displayAllSeats(final int SEAT_SCHEDULE_INDEX) {
-
-        }
-    }
+//    private static class Seats {
+//        public static final Integer[][] seats = new Integer[5][10];
+//
+//        public static void displayAllSeats(final int SEAT_SCHEDULE_INDEX) {
+//
+//        }
+//    }
 
     public static void main(String[] args) {
         while (true) {
@@ -28,8 +28,10 @@ public class Main {
                     Main main = new Main(temp);
                     main.reserve();
                     reservationDB.displayAllReservations();
+                    System.out.println("-----------------------------");
                     main.cancel();
                     reservationDB.displayAllReservations();
+                    System.out.println("-----------------------------");
                     break;
                 }
 
@@ -101,7 +103,7 @@ public class Main {
         final Integer SEAT_NUMBER = Reservation.inputSeatNumber();
         final TimeSchedule.Schedule SCHEDULE_INDEX = Reservation.inputScheduleIndex();
         final Reservation RESERVATION = new Reservation(EMAIL, SEAT_NUMBER, SCHEDULE_INDEX);
-        if (currentUser.setReservation(RESERVATION))
+        if (!currentUser.setReservation(RESERVATION))
             return;
 
         reservationDB.addReservation(SCHEDULE_INDEX, RESERVATION);
@@ -117,7 +119,7 @@ public class Main {
             return;
         }
 
-        if (reservationDB.findReservation(tempReservation.getSchedule(), tempReservation) == null ) {
+        if (reservationDB.findReservation(tempReservation.getSchedule(), tempReservation) == null) {
             System.err.println("Your reservation cannot be found on our database.");
             return;
         }

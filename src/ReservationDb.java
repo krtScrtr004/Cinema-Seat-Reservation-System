@@ -25,6 +25,8 @@ public class ReservationDb {
         ArrayList<Reservation> tempArray = reservationDb.get(SCHEDULE);
         if (tempArray != null)
             tempArray.remove(RESERVATION);
+        if (tempArray.size() < 1)               // remove key the arraylist associated with it has no more elements
+            reservationDb.remove(SCHEDULE);
     }
 
     public static ArrayList<Reservation> findReservation(final TimeSchedule.Schedule SCHEDULE, final Reservation RESERVATION) {
@@ -37,7 +39,7 @@ public class ReservationDb {
         if (tempArray != null)
             Collections.sort(tempArray);
         final int INDEX = tempArray.indexOf(RESERVATION);
-        return ((INDEX > 0) ? tempArray : null);
+        return ((INDEX >= 0) ? tempArray : null);
     }
 
 
