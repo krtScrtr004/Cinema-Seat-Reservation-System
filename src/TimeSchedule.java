@@ -6,7 +6,7 @@ public class TimeSchedule {
     private static final TreeMap<Integer, Schedule> timeSchedules = new TreeMap<>();
 
     public static final int MIN_INDEX = 1;
-    public static final int MAX_INDEX = 7;
+    public static final int MAX_INDEX = 6;
 
     public static class Schedule {
         LocalTime startTime;
@@ -43,11 +43,10 @@ public class TimeSchedule {
 
     static {
         timeSchedules.put(MIN_INDEX, new Schedule(LocalTime.of(9, 0), LocalTime.of(10, 0)));
-        timeSchedules.put(2, new Schedule(LocalTime.of(9, 0), LocalTime.of(10, 0)));
-        timeSchedules.put(3, new Schedule(LocalTime.of(10, 0), LocalTime.of(11, 0)));
-        timeSchedules.put(4, new Schedule(LocalTime.of(11, 0), LocalTime.of(12, 0)));
-        timeSchedules.put(5, new Schedule(LocalTime.of(13, 0), LocalTime.of(14, 0)));
-        timeSchedules.put(6, new Schedule(LocalTime.of(14, 0), LocalTime.of(15, 0)));
+        timeSchedules.put(2, new Schedule(LocalTime.of(10, 0), LocalTime.of(11, 0)));
+        timeSchedules.put(3, new Schedule(LocalTime.of(11, 0), LocalTime.of(12, 0)));
+        timeSchedules.put(4, new Schedule(LocalTime.of(13, 0), LocalTime.of(14, 0)));
+        timeSchedules.put(5, new Schedule(LocalTime.of(14, 0), LocalTime.of(15, 0)));
         timeSchedules.put(MAX_INDEX, new Schedule(LocalTime.of(15, 0), LocalTime.of(16, 0)));
     }
 

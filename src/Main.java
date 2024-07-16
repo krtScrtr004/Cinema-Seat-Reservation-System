@@ -1,16 +1,61 @@
+import java.util.ArrayList;
 
 public class Main {
     private User currentUser = new User();
     private static final UserDb userDB = new UserDb();
     private static final ReservationDb reservationDB = new ReservationDb();
 
-//    private static class Seats {
-//        public static final Integer[][] seats = new Integer[5][10];
-//
-//        public static void displayAllSeats(final int SEAT_SCHEDULE_INDEX) {
-//
-//        }
-//    }
+    private static class Seats {
+        private static final int COLUMN = 5, ROW = 10;
+        public static final Integer[][] seats = new Integer[COLUMN][ROW];
+
+        static {
+            for (int i = 0; i < COLUMN; ++i) {
+                for (int j = 0; j < ROW; ++j) {
+                    seats[i][j] = null;
+                }
+            }
+        }
+
+        public static void displayAllSeats(final TimeSchedule.Schedule SCHEDULE) {
+            ArrayList<Reservation> tempArray = reservationDB.retrieveReservationList(SCHEDULE);
+            if (tempArray == null)
+                return;
+
+            for (Reservation reservation : tempArray) {
+                final Integer SEAT_NUMBER = reservation.getSeatNumber();
+                if (SEAT_NUMBER < 1 || SEAT_NUMBER > 50) {
+                    System.err.println("Seat number must be in the range of 1 to 50.");
+                    return;
+                }
+
+                // parse seat number to column and row on the 2d array
+                int row = 0, column = 0;
+                if (SEAT_NUMBER == 10 || SEAT_NUMBER == 20
+                        || SEAT_NUMBER == 30 || SEAT_NUMBER == 40
+                        || SEAT_NUMBER == 50) {
+                    column = (SEAT_NUMBER / 10) - 1;
+                    row = 9;
+                } else {
+                    row = (SEAT_NUMBER / 10 == 0 ? 0 : (SEAT_NUMBER % 10) - 1);
+                    column = (SEAT_NUMBER % 10) - 1;
+                }
+                seats[column][row] = 1;
+            }
+
+            int counter = 1;
+            for (Integer[] x : seats) {
+                for (Integer y : x) {
+                    if (y != null)
+                        System.out.print("x    ");
+                    else
+                        System.out.print((counter < 10) ? counter + "    " : counter + "   ");
+                    counter++;
+                }
+                System.out.println();
+            }
+        }
+    }
 
     public static void main(String[] args) {
         while (true) {
@@ -24,19 +69,12 @@ public class Main {
             int choice = InputReader.readInt();
             switch (choice) {
                 case 1: {
-                    // For Login
-                    Main main = new Main(temp);
-                    main.reserve();
-                    reservationDB.displayAllReservations();
-                    System.out.println("-----------------------------");
-                    main.cancel();
-                    reservationDB.displayAllReservations();
-                    System.out.println("-----------------------------");
+                    User user = Main.login();
                     break;
                 }
 
                 case 2: {
-                    // For Signup
+
                     break;
                 }
 
@@ -57,27 +95,13 @@ public class Main {
 
         final String EMAIL = User.inputEmail();
         final String PASSWORD = User.inputPassword();
-        final User TEMP = User.findUser(EMAIL);
-        if (TEMP == null || !(TEMP.getPassword().equals(PASSWORD))) {
+        final User TEMP_USER = User.findUser(EMAIL);
+        if (TEMP_USER == null || !(TEMP_USER.getPassword().equals(PASSWORD))) {
             System.out.println("Email / password incorrect!");
             return null;
         }
 
-        return TEMP;
-    }
-
-    public final void forgotPassword() {
-        System.out.println("Forgot Password");
-
-        final String EMAIL = User.inputEmail();
-        final User TEMP = User.findUser(EMAIL);
-        if (TEMP == null) {
-            System.out.println("Email not found!");
-            return;
-        }
-
-        if (TEMP.setPassword(EMAIL))
-            System.out.println("Password successfully changed");
+        return TEMP_USER;
     }
 
     public static Boolean register() {
@@ -95,13 +119,27 @@ public class Main {
         return true;
     }
 
+    public final void forgotPassword() {
+        System.out.println("Forgot Password");
+
+        final String EMAIL = User.inputEmail();
+        final User TEMP = User.findUser(EMAIL);
+        if (TEMP == null) {
+            System.out.println("Email not found!");
+            return;
+        }
+
+        if (TEMP.setPassword(EMAIL))
+            System.out.println("Password successfully changed");
+    }
+
     public void reserve() {
         System.out.println("Reserve");
 
         TimeSchedule.printSchedule();
         final String EMAIL = currentUser.getEmail();
-        final Integer SEAT_NUMBER = Reservation.inputSeatNumber();
         final TimeSchedule.Schedule SCHEDULE_INDEX = Reservation.inputScheduleIndex();
+        final Integer SEAT_NUMBER = Reservation.inputSeatNumber();
         final Reservation RESERVATION = new Reservation(EMAIL, SEAT_NUMBER, SCHEDULE_INDEX);
         if (!currentUser.setReservation(RESERVATION))
             return;

@@ -29,6 +29,15 @@ public class ReservationDb {
             reservationDb.remove(SCHEDULE);
     }
 
+    public static ArrayList<Reservation> retrieveReservationList(final TimeSchedule.Schedule SCHEDULE) {
+        if (!reservationDb.containsKey(SCHEDULE)) {
+            System.out.println("Reservation list not found.");
+            return null;
+        }
+
+        return (reservationDb.get(SCHEDULE));
+    }
+
     public static ArrayList<Reservation> findReservation(final TimeSchedule.Schedule SCHEDULE, final Reservation RESERVATION) {
         if (!reservationDb.containsKey(SCHEDULE)) {
             System.out.println("Reservation not found.");
@@ -41,7 +50,6 @@ public class ReservationDb {
         final int INDEX = tempArray.indexOf(RESERVATION);
         return ((INDEX >= 0) ? tempArray : null);
     }
-
 
     public static void displayAllReservations() {
        for (Map.Entry<TimeSchedule.Schedule, ArrayList<Reservation>> entry : reservationDb.entrySet()) {

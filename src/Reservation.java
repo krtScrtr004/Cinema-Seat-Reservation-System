@@ -49,6 +49,8 @@ public class Reservation extends ReservationDb implements Comparable<Reservation
         this.schedule = SCHEDULE;
     }
 
+    public final Integer getSeatNumber() { return this.seatNumber; }
+
     public final TimeSchedule.Schedule getSchedule() { return this.schedule; }
 
     @Override
