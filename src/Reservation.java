@@ -18,22 +18,31 @@ public class Reservation extends ReservationDb implements Comparable<Reservation
     }
 
     public static Integer inputSeatNumber() {
+        boolean isValid = true;
         int tempSeatNumber;
         do {
             System.out.print("Enter the seat number: ");
             tempSeatNumber = InputReader.readInt();
-        } while (tempSeatNumber < 1 || tempSeatNumber > 50);
+            if (tempSeatNumber < 1 || tempSeatNumber > 50) {
+                System.err.println("Seat number must be within the range of 1 to 50 only.");
+                isValid = false;
+            }
+        } while (!isValid);
         return tempSeatNumber;
     }
 
     public static TimeSchedule.Schedule inputScheduleIndex() {
+        boolean isValid = true;
         int scheduleIndex;
         do {
             System.out.print("Enter schedule index: ");
             scheduleIndex = InputReader.readInt();
-        } while (scheduleIndex < TimeSchedule.MIN_INDEX ||
-                scheduleIndex > TimeSchedule.MAX_INDEX);
-
+            if (scheduleIndex < TimeSchedule.MIN_INDEX ||
+                    scheduleIndex > TimeSchedule.MAX_INDEX) {
+                System.err.println("Schedule index must be within the range of " + TimeSchedule.MIN_INDEX + " to " + TimeSchedule.MAX_INDEX + " only.");
+                isValid = false;;
+            }
+        } while (!isValid);
         return TimeSchedule.getSchedule(scheduleIndex);
     }
 

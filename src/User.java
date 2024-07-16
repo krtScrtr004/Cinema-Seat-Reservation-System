@@ -21,23 +21,53 @@ public class User extends UserDb {
     }
 
     public static String inputName() {
-        System.out.print("Enter your name: (LN, FN, MI.)");
-        return InputReader.readString();
+        boolean isValid = true;
+        String tempName;
+        do {
+            System.out.print("Enter your name: (LN, FN, MI.)");
+            tempName = InputReader.readString();
+            if (tempName.length() < 5 || tempName.length() > 100) {
+                System.err.println("Name length must be within the range of 5 to 100 only.");
+                isValid = false;
+            }
+        } while (!isValid);
+        return tempName;
     }
 
     public static String inputEmail() {
-        System.out.print("Enter your email: ");
-        return InputReader.readString();
+        boolean isValid = true;
+        String tempEmail;
+        do {
+            System.out.print("Enter your email: ");
+            tempEmail = InputReader.readString();
+            if (tempEmail.length() < 10 || tempEmail.length() > 20) {
+                System.err.println("Email length must be within the range of 10 to 20 only.")
+                        isValid = false;
+            }
+            if (tempEmail.contains(" ")) {
+                System.err.println("Email cannot contain a whitespace.");
+                isValid = false;
+            }
+        } while (!isValid);
+        return tempEmail;
     }
 
     public static String inputPassword() {
-        System.out.print("Enter your password: ");
-        return InputReader.readString();
+        boolean isValid = false;
+        String tempPassword;
+        do {
+            System.out.print("Enter your password: ");
+            tempPassword = InputReader.readString();
+            if (tempPassword.length() < 8 || tempPassword.length() > 25) {
+                System.err.println("Password length must be within the range of 8 to 25 only.");
+            }
+        } while (!isValid);
+        return tempPassword;
     }
 
     public final Boolean setName(final String NAME) {
         if (NAME.length() < 5 || NAME.length() > 100) {
-            System.out.println("Entered name length must be between 5 and 100!");
+            System.err.println("Name length must be within the range of 5 to 100 only.");
             return false;
         }
 
@@ -47,17 +77,17 @@ public class User extends UserDb {
 
     public final Boolean setEmail(final String EMAIL) {
         if (EMAIL.length() < 5 || EMAIL.length() > 50) {
-            System.out.println("Entered email length must be between 5 and 50!");
+            System.err.println("Email length must be within the range of 5 to 50 only.");
             return false;
         }
 
         if (!EMAIL.contains("@")) {
-            System.out.println("Incorrect email address!");
+            System.err.println("Email must have a '@' character.");
             return false;
         }
 
         if (findUser(EMAIL) != null) {
-            System.out.println("Email address already exists!");
+            System.err.println("Email address already exists.");
             return false;
         }
 
@@ -66,8 +96,8 @@ public class User extends UserDb {
     }
 
     public final Boolean setPassword(final String PASSWORD) {
-        if (PASSWORD.length() < 5 || PASSWORD.length() > 50) {
-            System.out.println("Entered password length must be between 5 and 50!");
+        if (PASSWORD.length() < 8 || PASSWORD.length() > 25) {
+            System.err.println("Password length must be within the range of 8 to 25 only.");
             return false;
         }
 
@@ -77,7 +107,7 @@ public class User extends UserDb {
 
     public final Boolean setReservation(final Reservation RESERVATION) {
         if ((reservation != null) && (ReservationDb.findReservation(reservation.getSchedule(), RESERVATION) == null)) {
-            System.out.println("Reservation already exists!");
+            System.err.println("Reservation already exists.");
             return false;
         }
 

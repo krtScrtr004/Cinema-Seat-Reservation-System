@@ -58,32 +58,57 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        while (true) {
-            User temp = new User("Secretario, Kurt O.", "kurt123@gmail.com", "kurt123", null);
-            userDB.addUser(temp);
+        boolean runProgram = true;
+        while (runProgram) {
+//            User temp = new User("Secretario, Kurt O.", "kurt123@gmail.com", "kurt123", null);
+//            userDB.addUser(temp);
 
             System.out.println("SEAT RESERVATION SYSTEM");
             System.out.println("[1] Login");
             System.out.println("[2] Register");
-            System.out.print("Enter your choice: ");
+            System.out.println("[3] Forget password");
+            System.out.println("[4] Exit");
+            System.out.print("Enter option index: ");
             int choice = InputReader.readInt();
             switch (choice) {
                 case 1: {
                     User user = Main.login();
+                    if (user == null) {
+                        System.err.println("Email / password incorrect.");
+                        continue;
+                    }
+
                     break;
                 }
 
                 case 2: {
+                    if (register())
+                        System.out.println("Registration successful.");
+                    else
+                        System.err.println("Registration unsuccessful.");
 
                     break;
                 }
 
+                case 3: {
+                    if (Main.forgotPassword())
+                        System.out.println("Password successfully changed");
+                    else
+                        System.err.println("Email not found.");
+                    break;
+                }
+
+                case 4: {
+                    InputReader.closeRead();
+                    runProgram = false;
+                    break;
+                }
+
                 default:
+                    System.err.println("Option index length must be within the range of 1 to 4 only.");
                     break;
             }
         }
-
-        // InputReader.closeRead();
     }
 
     public Main(final User USER) {
@@ -96,12 +121,7 @@ public class Main {
         final String EMAIL = User.inputEmail();
         final String PASSWORD = User.inputPassword();
         final User TEMP_USER = User.findUser(EMAIL);
-        if (TEMP_USER == null || !(TEMP_USER.getPassword().equals(PASSWORD))) {
-            System.out.println("Email / password incorrect!");
-            return null;
-        }
-
-        return TEMP_USER;
+        return (TEMP_USER == null || !(TEMP_USER.getPassword().equals(PASSWORD)) ? null : TEMP_USER);
     }
 
     public static Boolean register() {
@@ -119,18 +139,16 @@ public class Main {
         return true;
     }
 
-    public final void forgotPassword() {
+    public static Boolean forgotPassword() {
         System.out.println("Forgot Password");
 
         final String EMAIL = User.inputEmail();
         final User TEMP = User.findUser(EMAIL);
         if (TEMP == null) {
-            System.out.println("Email not found!");
-            return;
+            return false;
         }
 
-        if (TEMP.setPassword(EMAIL))
-            System.out.println("Password successfully changed");
+        return (TEMP.setPassword(EMAIL));
     }
 
     public void reserve() {

@@ -1,6 +1,5 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class UserDb {
     protected static HashMap<String, User> userDb = new HashMap<>();
@@ -31,13 +30,10 @@ public class UserDb {
         System.out.println("[3] Password");
 
         int choice = 0;
-        try (Scanner sc = new Scanner(System.in)) {
-            do {
-                System.out.print("Enter here: ");
-                choice = sc.nextInt();
-            } while (choice < 1 || choice > 3);
-            sc.nextLine();
-        }
+        do {
+            System.out.print("Enter here: ");
+            choice = InputReader.readInt();
+        } while (choice < 1 || choice > 3);
 
         switch (choice) {
             case 1: {
@@ -61,7 +57,12 @@ public class UserDb {
     }
 
     public static User findUser(final String EMAIL) {
-        return (userDb.getOrDefault(EMAIL, null));
+        if (!userDb.containsKey(EMAIL)) {
+            System.err.println("User not found.");
+            return null;
+        }
+
+        return (userDb.get(EMAIL));
     }
 
     public static void displayAllUsers() {

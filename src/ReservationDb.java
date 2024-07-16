@@ -25,17 +25,12 @@ public class ReservationDb {
         ArrayList<Reservation> tempArray = reservationDb.get(SCHEDULE);
         if (tempArray != null)
             tempArray.remove(RESERVATION);
-        if (tempArray.size() < 1)               // remove key the arraylist associated with it has no more elements
+        if (tempArray.size() < 1)               // remove key with arraylist associated with it that has no more elements
             reservationDb.remove(SCHEDULE);
     }
 
     public static ArrayList<Reservation> retrieveReservationList(final TimeSchedule.Schedule SCHEDULE) {
-        if (!reservationDb.containsKey(SCHEDULE)) {
-            System.out.println("Reservation list not found.");
-            return null;
-        }
-
-        return (reservationDb.get(SCHEDULE));
+        return (reservationDb.getOrDefault(SCHEDULE, null));
     }
 
     public static ArrayList<Reservation> findReservation(final TimeSchedule.Schedule SCHEDULE, final Reservation RESERVATION) {
@@ -48,7 +43,11 @@ public class ReservationDb {
         if (tempArray != null)
             Collections.sort(tempArray);
         final int INDEX = tempArray.indexOf(RESERVATION);
-        return ((INDEX >= 0) ? tempArray : null);
+        if (INDEX < 0) {
+            System.err.println("Reservation not found.");
+            return null;
+        }
+        return tempArray;
     }
 
     public static void displayAllReservations() {
