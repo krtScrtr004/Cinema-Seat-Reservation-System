@@ -1,10 +1,6 @@
-import java.sql.Time;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.LocalTime;
 import java.util.Objects;
 
-public class Reservation extends ReservationDb {
+public class Reservation extends ReservationDb implements Comparable<Reservation> {
     private String customerEmail;
     private Integer seatNumber;
     private TimeSchedule.Schedule schedule;
@@ -20,18 +16,6 @@ public class Reservation extends ReservationDb {
         this.seatNumber = SEAT_NUMBER;
         this.schedule = SCHEDULE;
     }
-
-//    private static LocalTime parseToTime(final String TIME_STR) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-//        LocalTime time;
-//        try {
-//            time = LocalTime.parse(TIME_STR, formatter);
-//        } catch (DateTimeParseException e) {
-//            throw new IllegalStateException(e);
-//        }
-//
-//        return time;
-//    }
 
     public static Integer inputSeatNumber() {
         int tempSeatNumber;
@@ -65,6 +49,7 @@ public class Reservation extends ReservationDb {
         this.schedule = SCHEDULE;
     }
 
+    public final TimeSchedule.Schedule getSchedule() { return this.schedule; }
 
     @Override
     public final String toString() {
@@ -89,5 +74,10 @@ public class Reservation extends ReservationDb {
     @Override
     public int hashCode() {
         return Objects.hash(seatNumber, schedule);
+    }
+
+    @Override
+    public int compareTo(Reservation reservation) {
+        return Integer.compare(this.seatNumber, reservation.seatNumber);
     }
 }

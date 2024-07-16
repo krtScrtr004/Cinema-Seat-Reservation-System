@@ -34,6 +34,11 @@ public class TimeSchedule {
             return Objects.equals(startTime, schedule.startTime) &&
                     Objects.equals(endTime, schedule.endTime);
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(startTime, endTime);
+        }
     }
 
     static {

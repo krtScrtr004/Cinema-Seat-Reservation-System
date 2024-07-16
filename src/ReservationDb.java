@@ -17,7 +17,7 @@ public class ReservationDb {
     }
 
     public static void deleteReservation(final TimeSchedule.Schedule SCHEDULE, final Reservation RESERVATION) {
-        if (!reservationDb.contains(SCHEDULE)) {
+        if (!reservationDb.containsKey(SCHEDULE)) {
             System.out.println("Reservation not found.");
             return;
         }
@@ -28,7 +28,7 @@ public class ReservationDb {
     }
 
     public static ArrayList<Reservation> findReservation(final TimeSchedule.Schedule SCHEDULE, final Reservation RESERVATION) {
-        if (!reservationDb.contains(SCHEDULE)) {
+        if (!reservationDb.containsKey(SCHEDULE)) {
             System.out.println("Reservation not found.");
             return null;
         }

@@ -4,6 +4,13 @@ public class Main {
     private static final UserDb userDB = new UserDb();
     private static final ReservationDb reservationDB = new ReservationDb();
 
+    private static class Seats {
+        public static final Integer[][] seats = new Integer[5][10];
+
+        public static void displayAllSeats(final int SEAT_SCHEDULE_INDEX) {
+
+        }
+    }
 
     public static void main(String[] args) {
         while (true) {
@@ -20,6 +27,8 @@ public class Main {
                     // For Login
                     Main main = new Main(temp);
                     main.reserve();
+                    reservationDB.displayAllReservations();
+                    main.cancel();
                     reservationDB.displayAllReservations();
                     break;
                 }
@@ -88,32 +97,32 @@ public class Main {
         System.out.println("Reserve");
 
         TimeSchedule.printSchedule();
-        final Reservation RESERVATION = new Reservation(currentUser.getEmail(),
-                                                        Reservation.inputSeatNumber(),
-                                                        Reservation.inputScheduleIndex());
-        if (reservationDB.findReservation(RESERVATION)) {
-            System.err.println("Reservation already exists.");
+        final String EMAIL = currentUser.getEmail();
+        final Integer SEAT_NUMBER = Reservation.inputSeatNumber();
+        final TimeSchedule.Schedule SCHEDULE_INDEX = Reservation.inputScheduleIndex();
+        final Reservation RESERVATION = new Reservation(EMAIL, SEAT_NUMBER, SCHEDULE_INDEX);
+        if (currentUser.setReservation(RESERVATION))
             return;
-        }
 
-        reservationDB.addReservation(RESERVATION);
-        System.out.println("Reservasion successful.");
+        reservationDB.addReservation(SCHEDULE_INDEX, RESERVATION);
+        System.out.println("Reservation successful.");
     }
 
     public void cancel() {
         System.out.println("Cancel");
 
-        if (currentUser.getReservation() == null) {
+        final Reservation tempReservation = currentUser.getReservation();
+        if (tempReservation == null) {
             System.err.println("You do not have pending reservation.");
             return;
         }
 
-        if (!reservationDB.findReservation(currentUser.getReservation())) {
+        if (reservationDB.findReservation(tempReservation.getSchedule(), tempReservation) == null ) {
             System.err.println("Your reservation cannot be found on our database.");
             return;
         }
 
-        reservationDB.deleteReservation(currentUser.getReservation());
+        reservationDB.deleteReservation(tempReservation.getSchedule(), tempReservation);
         System.out.println("Reservation cancelled.");
     }
 }
