@@ -13,56 +13,26 @@ public class User extends UserDb {
         this.reservation = null;
     }
 
-    public User(final String NAME, final String EMAIL, final String PASSWORD, final Reservation RESERVATION) {
-        this.name = NAME;
-        this.email = EMAIL;
-        this.password = PASSWORD;
-        this.reservation = RESERVATION;
-    }
+//    public User(final String NAME, final String EMAIL, final String PASSWORD, final Reservation RESERVATION) {
+//        this.name = NAME;
+//        this.email = EMAIL;
+//        this.password = PASSWORD;
+//        this.reservation = RESERVATION;
+//    }
 
     public static String inputName() {
-        boolean isValid = true;
-        String tempName;
-        do {
-            System.out.print("Enter your name: (LN, FN, MI.)");
-            tempName = InputReader.readString();
-            if (tempName.length() < 5 || tempName.length() > 100) {
-                System.err.println("Name length must be within the range of 5 to 100 only.");
-                isValid = false;
-            }
-        } while (!isValid);
-        return tempName;
+        System.out.print("Enter your name: (LN, FN, MI.) ");
+        return InputReader.readString();
     }
 
     public static String inputEmail() {
-        boolean isValid = true;
-        String tempEmail;
-        do {
-            System.out.print("Enter your email: ");
-            tempEmail = InputReader.readString();
-            if (tempEmail.length() < 10 || tempEmail.length() > 20) {
-                System.err.println("Email length must be within the range of 10 to 20 only.")
-                        isValid = false;
-            }
-            if (tempEmail.contains(" ")) {
-                System.err.println("Email cannot contain a whitespace.");
-                isValid = false;
-            }
-        } while (!isValid);
-        return tempEmail;
+        System.out.print("Enter your email: ");
+        return InputReader.readString();
     }
 
     public static String inputPassword() {
-        boolean isValid = false;
-        String tempPassword;
-        do {
-            System.out.print("Enter your password: ");
-            tempPassword = InputReader.readString();
-            if (tempPassword.length() < 8 || tempPassword.length() > 25) {
-                System.err.println("Password length must be within the range of 8 to 25 only.");
-            }
-        } while (!isValid);
-        return tempPassword;
+        System.out.print("Enter your password: ");
+        return InputReader.readString();
     }
 
     public final Boolean setName(final String NAME) {
@@ -106,7 +76,7 @@ public class User extends UserDb {
     }
 
     public final Boolean setReservation(final Reservation RESERVATION) {
-        if ((reservation != null) && (ReservationDb.findReservation(reservation.getSchedule(), RESERVATION) == null)) {
+        if ((reservation == null) || (ReservationDb.findReservation(reservation.getSchedule(), RESERVATION) == null)) {
             System.err.println("Reservation already exists.");
             return false;
         }
@@ -131,11 +101,21 @@ public class User extends UserDb {
         return this.reservation;
     }
 
+    public final void displayUserReservation() {
+        if (this.reservation == null) {
+            System.err.println("You have no pending reservation.");
+            return;
+        }
+        System.out.println("----------------------------------------------");
+        System.out.println(this.reservation);
+        System.out.println("----------------------------------------------");
+    }
+
     @Override
     public final String toString() {
-        return "Name = '" + name + '\'' +
-                ", Email = '" + email + '\'' +
-                ", Password = '" + password + '\'';
+        return "Name: " + name +
+                " Email: " + email +
+                " Password: '" + password;
     }
 
     @Override

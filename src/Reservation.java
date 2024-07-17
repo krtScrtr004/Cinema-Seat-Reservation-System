@@ -1,17 +1,17 @@
 import java.util.Objects;
 
 public class Reservation extends ReservationDb implements Comparable<Reservation> {
-    private String customerEmail;
-    private Integer seatNumber;
-    private TimeSchedule.Schedule schedule;
+    private final String customerEmail;
+    private final Integer seatNumber;
+    private final Schedule schedule;
 
-    public Reservation() {
-        this.customerEmail = null;
-        this.seatNumber = null;
-        this.schedule = null;
-    }
+//    public Reservation() {
+//        this.customerEmail = null;
+//        this.seatNumber = null;
+//        this.schedule = null;
+//    }
 
-    public Reservation(final String EMAIL, final Integer SEAT_NUMBER, final TimeSchedule.Schedule SCHEDULE) {
+    public Reservation(final String EMAIL, final Integer SEAT_NUMBER, final Schedule SCHEDULE) {
         this.customerEmail = EMAIL;
         this.seatNumber = SEAT_NUMBER;
         this.schedule = SCHEDULE;
@@ -31,41 +31,41 @@ public class Reservation extends ReservationDb implements Comparable<Reservation
         return tempSeatNumber;
     }
 
-    public static TimeSchedule.Schedule inputScheduleIndex() {
+    public static Schedule inputScheduleIndex() {
         boolean isValid = true;
         int scheduleIndex;
         do {
             System.out.print("Enter schedule index: ");
             scheduleIndex = InputReader.readInt();
-            if (scheduleIndex < TimeSchedule.MIN_INDEX ||
-                    scheduleIndex > TimeSchedule.MAX_INDEX) {
-                System.err.println("Schedule index must be within the range of " + TimeSchedule.MIN_INDEX + " to " + TimeSchedule.MAX_INDEX + " only.");
-                isValid = false;;
+            if (scheduleIndex < Main.ScheduleList.MIN_INDEX ||
+                    scheduleIndex > Main.ScheduleList.MAX_INDEX) {
+                System.err.println("Schedule index must be within the range of " + Main.ScheduleList.MIN_INDEX + " to " + Main.ScheduleList.MAX_INDEX + " only.");
+                isValid = false;
             }
         } while (!isValid);
-        return TimeSchedule.getSchedule(scheduleIndex);
+        return Main.ScheduleList.getSchedule(scheduleIndex);
     }
 
-    public final void setCustomerName(final String CUSTOMER_EMAIL) {
-        this.customerEmail = CUSTOMER_EMAIL;
-    }
+//    public final void setCustomerName(final String CUSTOMER_EMAIL) {
+//        this.customerEmail = CUSTOMER_EMAIL;
+//    }
 
-    public final void setSeatNumber(final Integer SEAT_NUMBER) {
-        this.seatNumber = SEAT_NUMBER;
-    }
+//    public final void setSeatNumber(final Integer SEAT_NUMBER) {
+//        this.seatNumber = SEAT_NUMBER;
+//    }
 
-    public final void setSchedule(final TimeSchedule.Schedule SCHEDULE) {
-        this.schedule = SCHEDULE;
-    }
+//    public final void setSchedule(final Schedule SCHEDULE) {
+//        this.schedule = SCHEDULE;
+//    }
 
     public final Integer getSeatNumber() { return this.seatNumber; }
 
-    public final TimeSchedule.Schedule getSchedule() { return this.schedule; }
+    public final Schedule getSchedule() { return this.schedule; }
 
     @Override
     public final String toString() {
-        return "Email " + this.customerEmail +
-                ", Seat Number " + this.seatNumber + ", " +
+        return "Email: " + this.customerEmail +
+                " Seat Number " + this.seatNumber + " " +
                 this.schedule;
     }
 
