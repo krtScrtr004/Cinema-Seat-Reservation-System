@@ -85,9 +85,9 @@ public class User extends UserDb {
         return true;
     }
 
-    public final String getName() {
-        return this.name;
-    }
+//    public final String getName() {
+//        return this.name;
+//    }
 
     public final String getEmail() {
         return this.email;

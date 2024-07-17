@@ -1,3 +1,6 @@
+// README: commented code can be used for future features
+// eg. adding of admin user
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.TreeMap;
