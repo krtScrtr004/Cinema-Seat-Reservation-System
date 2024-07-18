@@ -18,13 +18,16 @@ public class Reservation extends ReservationDb implements Comparable<Reservation
     }
 
     public static Integer inputSeatNumber() {
-        boolean isValid = true;
+        boolean isValid;
         int tempSeatNumber;
         do {
+            isValid = true;
             System.out.print("Enter the seat number: ");
             tempSeatNumber = InputReader.readInt();
             if (tempSeatNumber < 1 || tempSeatNumber > 50) {
-                System.err.println("Seat number must be within the range of 1 to 50 only.");
+                Main.sectionDivider();
+                System.out.println("Seat number must be within the range of 1 to 50 only.");
+                Main.sectionDivider();
                 isValid = false;
             }
         } while (!isValid);
@@ -32,14 +35,17 @@ public class Reservation extends ReservationDb implements Comparable<Reservation
     }
 
     public static Schedule inputScheduleIndex() {
-        boolean isValid = true;
+        boolean isValid;
         int scheduleIndex;
         do {
+            isValid = true;
             System.out.print("Enter schedule index: ");
             scheduleIndex = InputReader.readInt();
             if (scheduleIndex < Main.ScheduleList.MIN_INDEX ||
                     scheduleIndex > Main.ScheduleList.MAX_INDEX) {
-                System.err.println("Schedule index must be within the range of " + Main.ScheduleList.MIN_INDEX + " to " + Main.ScheduleList.MAX_INDEX + " only.");
+                Main.sectionDivider();
+                System.out.println("Schedule index must be within the range of " + Main.ScheduleList.MIN_INDEX + " to " + Main.ScheduleList.MAX_INDEX + " only.");
+                Main.sectionDivider();
                 isValid = false;
             }
         } while (!isValid);
@@ -89,6 +95,12 @@ public class Reservation extends ReservationDb implements Comparable<Reservation
 
     @Override
     public int compareTo(Reservation reservation) {
-        return Integer.compare(this.seatNumber, reservation.seatNumber);
+        // (first prio) compare seat number
+        int seatNumberComparison = Integer.compare(this.seatNumber, reservation.seatNumber);
+        if (seatNumberComparison != 0)          // if current seat number is greater / less than other, return
+            return seatNumberComparison;
+
+        // (if seatNumber are equal) compare startTime
+        return this.schedule.startTime.compareTo(reservation.schedule.startTime);   // if current start time is greater / less than other, return
     }
 }

@@ -1,16 +1,19 @@
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class User extends UserDb {
     private String name;
     private String email;
     private String password;
-    private Reservation reservation;
+    private final ArrayList<Reservation> reservation;
+
+    private static final int MAX_RESERVATION_COUNT = 50;
 
     public User() {
         this.name = null;
         this.email = null;
         this.password = null;
-        this.reservation = null;
+        this.reservation =  new ArrayList<>();
     }
 
 //    public User(final String NAME, final String EMAIL, final String PASSWORD, final Reservation RESERVATION) {
@@ -37,7 +40,8 @@ public class User extends UserDb {
 
     public final Boolean setName(final String NAME) {
         if (NAME.length() < 5 || NAME.length() > 100) {
-            System.err.println("Name length must be within the range of 5 to 100 only.");
+            Main.sectionDivider();
+            System.out.println("Name length must be within the range of 5 to 100 only.");
             return false;
         }
 
@@ -47,17 +51,20 @@ public class User extends UserDb {
 
     public final Boolean setEmail(final String EMAIL) {
         if (EMAIL.length() < 5 || EMAIL.length() > 50) {
-            System.err.println("Email length must be within the range of 5 to 50 only.");
+            Main.sectionDivider();
+            System.out.println("Email length must be within the range of 5 to 50 only.");
             return false;
         }
 
         if (!EMAIL.contains("@")) {
-            System.err.println("Email must have a '@' character.");
+            Main.sectionDivider();
+            System.out.println("Email must have a '@' character.");
             return false;
         }
 
         if (findUser(EMAIL) != null) {
-            System.err.println("Email address already exists.");
+            Main.sectionDivider();
+            System.out.println("Email address already exists.");
             return false;
         }
 
@@ -67,7 +74,8 @@ public class User extends UserDb {
 
     public final Boolean setPassword(final String PASSWORD) {
         if (PASSWORD.length() < 8 || PASSWORD.length() > 25) {
-            System.err.println("Password length must be within the range of 8 to 25 only.");
+            Main.sectionDivider();
+            System.out.println("Password length must be within the range of 8 to 25 only.");
             return false;
         }
 
@@ -75,13 +83,20 @@ public class User extends UserDb {
         return true;
     }
 
-    public final Boolean setReservation(final Reservation RESERVATION) {
-        if ((reservation == null) || (ReservationDb.findReservation(reservation.getSchedule(), RESERVATION) == null)) {
-            System.err.println("Reservation already exists.");
+    public final boolean setReservation(final Schedule SCHEDULE, final Reservation RESERVATION) {
+        if (ReservationDb.findReservation(SCHEDULE, RESERVATION) != null) {
+            Main.sectionDivider();
+            System.out.println("Seat is already reserved.");
             return false;
         }
 
-        this.reservation = RESERVATION;
+        if (reservation.size() > MAX_RESERVATION_COUNT) {
+            Main.sectionDivider();
+            System.out.println("Your reservation count reached the maximum (50).");
+            return false;
+        }
+
+        this.reservation.add(RESERVATION);
         return true;
     }
 
@@ -97,25 +112,33 @@ public class User extends UserDb {
         return this.password;
     }
 
-    public final Reservation getReservation() {
-        return this.reservation;
+    public final Reservation getReservation(final int INDEX) {
+        return this.reservation.get(INDEX - 1);
     }
 
-    public final void displayUserReservation() {
-        if (this.reservation == null) {
-            System.err.println("You have no pending reservation.");
-            return;
+    public final void removeReservation(final int INDEX) {
+        this.reservation.remove(INDEX - 1);
+    }
+
+    public final boolean displayUserReservation() {
+        if (this.reservation.isEmpty()) {
+            System.out.println("You have no pending reservation.");
+            return false;
         }
-        System.out.println("----------------------------------------------");
-        System.out.println(this.reservation);
-        System.out.println("----------------------------------------------");
+
+        int currentIndex = 1;
+        for (Reservation reservations : reservation) {
+            System.out.println("[" + currentIndex + "] " + reservations);
+            currentIndex++;
+        }
+        return true;
     }
 
     @Override
     public final String toString() {
-        return "Name: " + name +
-                " Email: " + email +
-                " Password: '" + password;
+        return "Name: " + name + '\n' +
+                "Email: " + email + '\n' +
+                "Password: " + password;
     }
 
     @Override

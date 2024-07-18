@@ -10,8 +10,9 @@ public class ReservationDb {
     }
 
     public static void addReservation(final Schedule SCHEDULE, final Reservation RESERVATION) {
-        // check if particular schedule is already win the database
+        // check if particular schedule key is already win the database
         if (!reservationDb.containsKey(SCHEDULE))
+            // if not, map it to the database
             reservationDb.put(SCHEDULE, new ArrayList<>());
 
         ArrayList<Reservation> tempArray = reservationDb.get(SCHEDULE);
@@ -21,6 +22,7 @@ public class ReservationDb {
 
     public static void deleteReservation(final Schedule SCHEDULE, final Reservation RESERVATION) {
         if (!reservationDb.containsKey(SCHEDULE)) {
+            Main.sectionDivider();
             System.out.println("Reservation not found.");
             return;
         }
@@ -28,7 +30,7 @@ public class ReservationDb {
         ArrayList<Reservation> tempArray = reservationDb.get(SCHEDULE);
         if (tempArray != null)
             tempArray.remove(RESERVATION);
-        if ((tempArray == null) || (tempArray.isEmpty()))               // remove key with arraylist associated with it that has no more elements
+        if ((tempArray == null) || (tempArray.isEmpty()))        // remove key with arraylist associated with it that has no more elements
             reservationDb.remove(SCHEDULE);
     }
 
@@ -37,19 +39,20 @@ public class ReservationDb {
     }
 
     public static ArrayList<Reservation> findReservation(final Schedule SCHEDULE, final Reservation RESERVATION) {
-        if (!reservationDb.containsKey(SCHEDULE)) {
-            System.out.println("Reservation not found.");
+        if (!reservationDb.containsKey(SCHEDULE))
+            return null;
+
+        ArrayList<Reservation> tempArray = reservationDb.get(SCHEDULE);
+        if (tempArray == null) {
+            Main.sectionDivider();
+            System.out.println("Error fetching data on database.");
             return null;
         }
 
-        ArrayList<Reservation> tempArray = reservationDb.get(SCHEDULE);
-        if (tempArray != null)
-            Collections.sort(tempArray);
-        else
-            return null;
-
+        Collections.sort(tempArray);
         if (Collections.binarySearch(tempArray, RESERVATION) < 0) {
-            System.err.println("Reservation not found.");
+            Main.sectionDivider();
+            System.out.println("Reservation not found."); // FIXME
             return null;
         }
         return tempArray;
