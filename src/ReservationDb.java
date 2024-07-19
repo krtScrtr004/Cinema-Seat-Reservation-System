@@ -50,12 +50,7 @@ public class ReservationDb {
         }
 
         Collections.sort(tempArray);
-        if (Collections.binarySearch(tempArray, RESERVATION) < 0) {
-            Main.sectionDivider();
-            System.out.println("Reservation not found."); // FIXME
-            return null;
-        }
-        return tempArray;
+        return ((Collections.binarySearch(tempArray, RESERVATION) < 0) ? null: tempArray);
     }
 
 //    public static void displayAllReservations() {
